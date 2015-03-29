@@ -148,10 +148,9 @@ def fix_tester(ast):
     return ast.dumps()
 
 
-def fix():
+def fix(input_file=None):
     """Wrapper for user argument checking and import fixing."""
-    check_user_input()
-    input_file = sys.argv[1]
+    check_user_input(input_file)
     ast = read_source(input_file)
     ast = fix_imports(ast)
     ast = fix_function_calls(ast)

@@ -12,10 +12,12 @@ setup(
     description='A sourcecode manipulation tool for converting imports.',
     long_description='This tool allows for rapid migration of extension '
                      'imports away from the deprecated `.ext` format.',
-    install_requires=['RedBaron'],
+    install_requires=['RedBaron', 'click'],
+    tests_require=['nose'],
     packages=['flask_ext_migrate'],
     entry_points={
-        'console_scripts': ['flask_ext_migrate = pour.pour:generate']
+        'console_scripts': [
+            'flask_ext_migrate = flask_ext_migrate.startup:startup']
     }
 
 )
