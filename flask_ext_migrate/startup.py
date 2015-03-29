@@ -1,10 +1,9 @@
 import click
 
-import flaskext_migrate
+from . import run
 
 
 @click.command()
-@click.argument('input_file',
-                required=True)
+@click.argument('input_file', required=True)
 def startup(input_file):
-    flaskext_migrate.run(input_file)
+    run(input_file)

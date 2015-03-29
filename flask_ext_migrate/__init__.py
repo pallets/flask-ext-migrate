@@ -1,7 +1,7 @@
 # Script which modifies source code away from the deprecated "flask.ext"
 # format.
 #
-# Run in the terminal by typing: `python flaskext_migrate.py <source_file.py>`
+# Run in the terminal by typing: `python -m flask_ext_migrate <source_file.py>`
 #
 # Author: Keyan Pishdadian 2015
 

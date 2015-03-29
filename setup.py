@@ -19,5 +19,4 @@ setup(
         'console_scripts': [
             'flask_ext_migrate = flask_ext_migrate.startup:startup']
     }
-
 )

@@ -2,7 +2,7 @@
 #
 # Author: Keyan Pishdadian
 from redbaron import RedBaron
-from flask_ext_migrate import flaskext_migrate as migrate
+import flask_ext_migrate as migrate
 
 
 def test_simple_from_import():
