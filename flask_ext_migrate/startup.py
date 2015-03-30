@@ -1,9 +1,9 @@
 import click
 
-from . import run
+from . import fix
 
 
 @click.command()
 @click.argument('input_file', required=True)
 def startup(input_file):
-    run(input_file)
+    fix(input_file)
