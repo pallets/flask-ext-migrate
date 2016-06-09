@@ -150,7 +150,7 @@ def fix_tester(ast):
 
 def fix(input_file=None):
     """Wrapper for user argument checking and import fixing."""
-    check_user_input(input_file)
+    check_user_input()
     ast = read_source(input_file)
     ast = fix_imports(ast)
     ast = fix_function_calls(ast)
