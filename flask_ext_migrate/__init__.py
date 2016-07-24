@@ -33,33 +33,45 @@ def fix_from_imports(red):
     """
     Converts "from" style imports to not use "flask.ext".
 
-    Handles:
-    Case 1: from flask.ext.foo import bam --> from flask_foo import bam
-    Case 2: from flask.ext import foo --> import flask_foo as foo
+    Handles (with or without parens or linebreaks):
+    from flask.ext.foo import bam --> from flask_foo import bam
+    from flask.ext.foo.bar import bam --> from flask_foo.bar import bam
+    from flask.ext import foo --> import flask_foo as foo
     """
     from_imports = red.find_all("FromImport")
-    for x, node in enumerate(from_imports):
-        values = node.value
-        if len(values) < 2:
-            continue
-        if (values[0].value == 'flask') and (values[1].value == 'ext'):
-            # Case 1
-            if len(node.value) == 3:
-                package = values[2].value
-                modules = node.modules()
-                module_string = _get_modules(modules)
-                if len(modules) > 1:
-                    node.replace("from flask_%s import %s"
-                                 % (package, module_string))
+    for node in from_imports:
+        modules = node.value
+
+        if (len(modules) < 2 or
+                modules[0].value != 'flask' and modules[1].value != 'ext'):
+                    continue
+
+        if len(modules) >= 3:
+            tars_str = ''
+            if len(node.targets) == 1:
+                tar = node.targets[0]
+                if tar.target:
+                    tars_str = '%s as %s' % (tar.value, tar.target)
                 else:
-                    name = node.names()[0]
-                    node.replace("from flask_%s import %s as %s"
-                                 % (package, module_string, name))
-            # Case 2
+                    tars_str = '%s as %s' % (tar.value, tar.value)
             else:
-                module = node.modules()[0]
-                node.replace("import flask_%s as %s"
-                             % (module, module))
+                for i in node.targets:
+                    tars_str += i.value
+                    if (i.type == 'name_as_name'
+                            and i.next
+                            and i.next.type != ('right_parenthesis')):
+                                tars_str += ', '
+
+            modules_str = '.'.join([i.value for i in modules[2:]])
+
+            node.replace('from flask_%s import %s'
+                         % (modules_str, tars_str))
+
+        elif len(modules) == 2:
+            # simple from import
+            module = node.modules()[0]
+            node.replace("import flask_%s as %s"
+                         % (module, module))
     return red
 
 
@@ -83,23 +95,6 @@ def fix_standard_imports(red):
             pass
 
     return red
-
-
-def _get_modules(module):
-    """
-    Takes a list of modules and converts into a string.
-
-    The module list can include parens, this function checks each element in
-    the list, if there is a paren then it does not add a comma before the next
-    element. Otherwise a comma and space is added. This is to preserve module
-    imports which are multi-line and/or occur within parens. While also not
-    affecting imports which are not enclosed.
-    """
-    modules_string = [cur + ', ' if cur.isalnum() and next.isalnum()
-                      else cur
-                      for (cur, next) in zip(module, module[1:]+[''])]
-
-    return ''.join(modules_string)
 
 
 def fix_function_calls(red):

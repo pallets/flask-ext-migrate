@@ -56,6 +56,20 @@ def test_parens_import():
     assert output == "from flask_foo import (bar, foo, foobar)"
 
 
+def test_from_subpackages_import():
+    red = RedBaron("from flask.ext.foo.bar import (foobar, foobarz)")
+    output = migrate.fix_tester(red)
+    assert output == "from flask_foo.bar import (foobar, foobarz)"
+
+
+def test_multiline_from_subpackages_import():
+    red = RedBaron("from flask.ext.foo.bar import (foobar,\
+                   foobarz,\
+                   foobarred)")
+    output = migrate.fix_tester(red)
+    assert output == "from flask_foo.bar import (foobar, foobarz, foobarred)"
+
+
 def test_function_call_migration():
     red = RedBaron("flask.ext.foo(var)")
     output = migrate.fix_tester(red)
