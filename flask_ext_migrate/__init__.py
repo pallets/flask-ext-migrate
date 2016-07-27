@@ -43,7 +43,7 @@ def fix_from_imports(red):
         modules = node.value
 
         if (len(modules) < 2 or
-                modules[0].value != 'flask' and modules[1].value != 'ext'):
+                modules[0].value != 'flask' or modules[1].value != 'ext'):
                     continue
 
         if len(modules) >= 3:
