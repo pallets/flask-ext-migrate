@@ -56,14 +56,14 @@ def fix_from_imports(red):
             else:
                 for i in node.targets:
                     tars_str += i.value
-                    if (i.type == 'name_as_name' 
-                        and i.next 
-                        and i.next.type != ('right_parenthesis')):
-                        tars_str += ', '
+                    if (i.type == 'name_as_name'
+                        and i.next
+                            and i.next.type != ('right_parenthesis')):
+                                tars_str += ', '
 
             modules_str = '.'.join([i.value for i in modules[2:]])
 
-            node.replace('from flask_%s import %s' 
+            node.replace('from flask_%s import %s'
                          % (modules_str, tars_str))
 
         elif len(modules) == 2:
