@@ -23,6 +23,18 @@ def test_from_to_from_named_import():
     assert output == "from flask_foo import bar as baz"
 
 
+def test_from_to_from_samename_import():
+    red = RedBaron("from flask.ext.foo import bar as bar")
+    output = migrate.fix_tester(red)
+    assert output == "from flask_foo import bar"
+
+
+def test_from_to_from_samename_subpackages_import():
+    red = RedBaron("from flask.ext.foo.bar import baz as baz")
+    output = migrate.fix_tester(red)
+    assert output == "from flask_foo.bar import baz"
+
+
 def test_multiple_import():
     red = RedBaron("from flask.ext.foo import bar, foobar, something")
     output = migrate.fix_tester(red)

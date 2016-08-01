@@ -49,7 +49,7 @@ def fix_from_imports(red):
             tars_str = ''
             if len(node.targets) == 1:
                 tar = node.targets[0]
-                if tar.target:
+                if tar.target and tar.target != tar.value:
                     tars_str = '%s as %s' % (tar.value, tar.target)
                 else:
                     tars_str = tar.value
