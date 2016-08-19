@@ -87,7 +87,9 @@ def test_from_subpackages_named_import():
 
 
 def test_from_subpackages_parens_import():
-    red = RedBaron("from flask.ext.foo.bar import (foobar, foobarz, foobarred)")
+    red = RedBaron(
+        "from flask.ext.foo.bar import (foobar, foobarz, foobarred)"
+    )
     output = migrate.fix_tester(red)
     assert output == "from flask_foo.bar import (foobar, foobarz, foobarred)"
 
