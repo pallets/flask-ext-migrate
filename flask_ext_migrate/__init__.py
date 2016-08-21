@@ -125,14 +125,15 @@ def _form_function_call(node):
             output += param.dumps() + "."
 
 
-def fix_tester(ast):
+def fix_tester(string):
     """Wrapper which allows for testing when not running from shell."""
+    ast = RedBaron(string)
     ast = fix_imports(ast)
     ast = fix_function_calls(ast)
     return ast.dumps()
 
 
-def fix(input_file=None):
+def fix(input_file):
     """Wrapper for user argument checking and import fixing."""
     ast = read_source(input_file)
     ast = fix_imports(ast)
