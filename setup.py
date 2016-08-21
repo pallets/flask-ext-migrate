@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='flask_ext_migrate',
-    version='0.0.1',
+    version='0.1.0',
     url='https://github.com/pocoo/flask-ext-migrate',
     license='BSD',
     author='Keyan Pishdadian',
