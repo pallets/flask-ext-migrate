@@ -1,4 +1,6 @@
+import pytest
 from redbaron import RedBaron
+
 import flask_ext_migrate as migrate
 
 
@@ -6,6 +8,38 @@ def test_simple_from_import():
     red = RedBaron("from flask.ext import foo")
     output = migrate.fix_tester(red)
     assert output == "import flask_foo as foo"
+
+
+def test_non_flask_import_unchanged():
+    red = RedBaron("import requests")
+    output = migrate.fix_tester(red)
+    assert output == "import requests"
+
+
+def test_base_flask_import_unchanged():
+    red = RedBaron("import flask")
+    output = migrate.fix_tester(red)
+    assert output == "import flask"
+
+
+def test_base_flask_from_import_unchanged():
+    red = RedBaron("from flask import Flask")
+    output = migrate.fix_tester(red)
+    assert output == "from flask import Flask"
+
+
+def test_invalid_import_doesnt_raise():
+    red = RedBaron("import adjfsjdn")
+    try:
+        migrate.fix_tester(red)
+    except Exception as e:
+        pytest.fail(e)
+
+
+def test_invalid_import_unchanged():
+    red = RedBaron("import adjfsjdn")
+    output = migrate.fix_tester(red)
+    assert output == "import adjfsjdn"
 
 
 def test_from_to_from_import():
@@ -111,9 +145,3 @@ def test_nested_function_call_migration():
     output = migrate.fix_tester(red)
     assert output == ("import flask_foo\n\n"
                       "flask_foo.bar(var)")
-
-
-def test_no_change_to_import():
-    red = RedBaron("from flask import Flask")
-    output = migrate.fix_tester(red)
-    assert output == "from flask import Flask"
