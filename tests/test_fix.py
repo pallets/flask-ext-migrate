@@ -1,6 +1,3 @@
-# Tester for the flaskext_migrate.py module.
-#
-# Author: Keyan Pishdadian
 from redbaron import RedBaron
 import flask_ext_migrate as migrate
 
