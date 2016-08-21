@@ -1,5 +1,10 @@
 flask_ext_migrate: import migration tool
-=========================
+========================================
+
+.. image:: https://img.shields.io/travis/pallets/flask-ext-migrate.svg
+    :target: https://travis-ci.org/pallets/flask-ext-migrate
+.. image:: https://img.shields.io/pypi/v/flask_ext_migrate.svg
+    :target: https://pypi.python.org/pypi/flask_ext_migrate
 
 This package allows for rapid fixing of old style Flask extension imports from 
 the format `flask.ext.foo` to `flask_foo`. It also repairs any associated 
