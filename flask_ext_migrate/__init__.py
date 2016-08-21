@@ -1,11 +1,3 @@
-# Script which modifies source code away from the deprecated "flask.ext"
-# format.
-#
-# Run in the terminal by typing: `python -m flask_ext_migrate <source_file.py>`
-#
-# Author: Keyan Pishdadian 2015
-
-import sys
 from redbaron import RedBaron
 
 
@@ -133,12 +125,6 @@ def _form_function_call(node):
             output += param.dumps() + "."
 
 
-def check_user_input():
-    """Exits and gives error message if no argument is passed in the shell."""
-    if len(sys.argv) < 2:
-        sys.exit("No filename was included, please try again.")
-
-
 def fix_tester(ast):
     """Wrapper which allows for testing when not running from shell."""
     ast = fix_imports(ast)
@@ -148,12 +134,7 @@ def fix_tester(ast):
 
 def fix(input_file=None):
     """Wrapper for user argument checking and import fixing."""
-    check_user_input()
     ast = read_source(input_file)
     ast = fix_imports(ast)
     ast = fix_function_calls(ast)
     write_source(ast, input_file)
-
-
-if __name__ == "__main__":
-    fix()
