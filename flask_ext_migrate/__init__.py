@@ -153,7 +153,3 @@ def fix(input_file=None):
     ast = fix_imports(ast)
     ast = fix_function_calls(ast)
     write_source(ast, input_file)
-
-
-if __name__ == "__main__":
-    fix()
