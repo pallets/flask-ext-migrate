@@ -133,7 +133,7 @@ def fix_tester(string):
     return ast.dumps()
 
 
-def fix(input_file=None):
+def fix(input_file):
     """Wrapper for user argument checking and import fixing."""
     ast = read_source(input_file)
     ast = fix_imports(ast)
