@@ -23,6 +23,18 @@ def test_base_flask_from_import_unchanged():
     assert output == "from flask import Flask"
 
 
+def test_base_non_flask_from_import_doesnt_raise():
+    try:
+        migrate.fix_tester("from foo import bar")
+    except Exception as e:
+        pytest.fail(e)
+
+
+def test_base_non_flask_from_import_unchanged():
+    output = migrate.fix_tester("from foo import bar")
+    assert output == "from foo import bar"
+
+
 def test_invalid_import_doesnt_raise():
     try:
         migrate.fix_tester("import adjfsjdn")
