@@ -42,33 +42,36 @@ def fix_from_imports(red):
     for node in from_imports:
         modules = node.value
 
-        if (len(modules) < 2 or
-                modules[0].value != 'flask' or modules[1].value != 'ext'):
-                    continue
+        if modules[0].value != 'flask' and modules[1].value != 'ext':
+            continue
 
         if len(modules) >= 3:
-            tars_str = ''
+            name_str = ''
             if len(node.targets) == 1:
-                tar = node.targets[0]
-                if tar.target:
-                    tars_str = '%s as %s' % (tar.value, tar.target)
+                name = node.targets[0].target
+                module = node.targets[0].value
+
+                if (name and name != module):
+                    name_str = '%s as %s' % (module, name)
                 else:
-                    tars_str = '%s as %s' % (tar.value, tar.value)
+                    name_str = module
             else:
-                for i in node.targets:
-                    tars_str += i.value
-                    if (i.type == 'name_as_name'
-                            and i.next
-                            and i.next.type != ('right_parenthesis')):
-                                tars_str += ', '
+                for target in node.targets:
+                    name_str += target.value
+
+                    if not target.next:
+                        continue
+
+                    if (target.type == 'name_as_name'
+                            and target.next.type != 'right_parenthesis'):
+                        name_str += ', '
 
             modules_str = '.'.join([i.value for i in modules[2:]])
 
             node.replace('from flask_%s import %s'
-                         % (modules_str, tars_str))
+                         % (modules_str, name_str))
 
         elif len(modules) == 2:
-            # simple from import
             module = node.modules()[0]
             node.replace("import flask_%s as %s"
                          % (module, module))

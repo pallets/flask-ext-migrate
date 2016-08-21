@@ -14,7 +14,25 @@ def test_simple_from_import():
 def test_from_to_from_import():
     red = RedBaron("from flask.ext.foo import bar")
     output = migrate.fix_tester(red)
-    assert output == "from flask_foo import bar as bar"
+    assert output == "from flask_foo import bar"
+
+
+def test_from_to_from_named_import():
+    red = RedBaron("from flask.ext.foo import bar as baz")
+    output = migrate.fix_tester(red)
+    assert output == "from flask_foo import bar as baz"
+
+
+def test_from_to_from_samename_import():
+    red = RedBaron("from flask.ext.foo import bar as bar")
+    output = migrate.fix_tester(red)
+    assert output == "from flask_foo import bar"
+
+
+def test_from_to_from_samename_subpackages_import():
+    red = RedBaron("from flask.ext.foo.bar import baz as baz")
+    output = migrate.fix_tester(red)
+    assert output == "from flask_foo.bar import baz"
 
 
 def test_multiple_import():
@@ -57,9 +75,23 @@ def test_parens_import():
 
 
 def test_from_subpackages_import():
-    red = RedBaron("from flask.ext.foo.bar import (foobar, foobarz)")
+    red = RedBaron("from flask.ext.foo.bar import foobar")
     output = migrate.fix_tester(red)
-    assert output == "from flask_foo.bar import (foobar, foobarz)"
+    assert output == "from flask_foo.bar import foobar"
+
+
+def test_from_subpackages_named_import():
+    red = RedBaron("from flask.ext.foo.bar import foobar as foobaz")
+    output = migrate.fix_tester(red)
+    assert output == "from flask_foo.bar import foobar as foobaz"
+
+
+def test_from_subpackages_parens_import():
+    red = RedBaron(
+        "from flask.ext.foo.bar import (foobar, foobarz, foobarred)"
+    )
+    output = migrate.fix_tester(red)
+    assert output == "from flask_foo.bar import (foobar, foobarz, foobarred)"
 
 
 def test_multiline_from_subpackages_import():
