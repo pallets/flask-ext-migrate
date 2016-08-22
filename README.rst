@@ -26,21 +26,29 @@ Usage
 ::
 
     $ flask_ext_migrate --help
-    usage: flask_ext_migrate [OPTIONS] INPUT_FILE
+    usage: flask_ext_migrate <INPUT_SOURCE>
 
     A source code migration tool for converting extension imports.
     --------------------------------------------------------------------------
     https://github.com/pocoo/flask-ext-migrate
 
     required arguments:
-      <INPUT_FILE>   The file to be modified
+      <INPUT_SOURCE>     Either a single file or directory to be recursively converted
 
     optional arguments:
-      --help         Show this help message and exit
+      --help             Show this help message and exit
 
-For example to convert the imports in a file `app.py` use the command line:
+For example to convert the imports in a file `app.py` use:
 
 .. code-block:: bash
 
     $ flask_ext_migrate app.py
 
+To convert all imports in all files within the directory `app/` (relative path) use:
+
+.. code-block:: bash
+
+    $ flask_ext_migrate app
+
+    # This also works.
+    $ flask_ext_migrate app/
