@@ -9,3 +9,4 @@ dist
 _mailinglist
 .tox
 *.swp
+.cache
