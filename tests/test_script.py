@@ -1,5 +1,3 @@
-import os
-
 from flask_ext_migrate.startup import startup
 import flask_ext_migrate as migrate
 

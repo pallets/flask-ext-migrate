@@ -1,6 +1,3 @@
-import shutil
-import tempfile
-
 from click.testing import CliRunner
 import pytest
 
