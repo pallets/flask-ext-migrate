@@ -22,10 +22,7 @@ def startup(input_source):
 
 
 def get_source_files(directory):
-    filepaths = []
     for root, _, files in os.walk(directory):
         for filename in files:
             if filename.endswith('.py'):
-                filepaths.append(os.path.join(root, filename))
-
-    return filepaths
+                yield os.path.join(root, filename)
